@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt-nodejs');
 const cors = require('cors');
 const knex = require('knex');
 require('dotenv').config();
+const morgan = require('morgan');
 
 const register = require('./controllers/register');
 const signin = require('./controllers/signin');
@@ -12,21 +13,18 @@ const image = require('./controllers/image');
 
 const db = knex({
   client: 'pg',
-  connection: {
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password:  process.env.DB_PASS,
-    database: process.env.DB_NAME
-  }
+  connection: process.env.POSTGRES_URI
 });
 
 
 const app = express();
 
-app.use(cors())
+app.use(morgan('combined'));
+// console.log('double-check');
+app.use(cors());
 app.use(bodyParser.json());
 
-app.get('/', (req, res)=> { res.send(database.users) })
+app.get('/', (req, res)=> { res.send('API Server Started, Please try with correct address!')})
 app.post('/signin', signin.handleSignin(db, bcrypt))
 app.post('/register', (req, res) => { register.handleRegister(req, res, db, bcrypt) })
 app.get('/profile/:id', (req, res) => { profile.handleProfileGet(req, res, db)})
