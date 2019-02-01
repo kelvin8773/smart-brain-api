@@ -6,6 +6,8 @@ CREATE TABLE users (
 	name VARCHAR(100),
 	email TEXT UNIQUE NOT NULL,
 	entries BIGINT DEFAULT 0,
+	age INT DEFAULT 18,
+	pet VARCHAR(100),
 	joined TIMESTAMP NOT NULL
 );
 
